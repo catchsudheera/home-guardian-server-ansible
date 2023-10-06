@@ -13,11 +13,34 @@
     owner: "{{ server_data_dir_user }}"
     group: "{{ server_data_dir_group }}"
 
-- name: Ensure DNS stub resolver is disabled
-  lineinfile:
-    path: /etc/systemd/resolved.conf
-    regexp: '^DNSStubListener='
-    line: DNSStubListener=no
+# https://github.com/pi-hole/docker-pi-hole#installing-on-ubuntu-or-fedora
+- name: Customizations for Ubuntu/Fedora
+  block:
+    - name: Ensure Caching DNS stub resolver is disabled
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^DNSStubListener='
+        line: DNSStubListener=no
+
+    - name: Delete resolv.conf file
+      ansible.builtin.file:
+        path: rm /etc/resolv.conf
+        state: absent
+
+    - name: Create a symbolic link for /etc/resolv.conf
+      ansible.builtin.file:
+        src: /etc/resolv.conf
+        dest: /run/systemd/resolve/resolv.conf
+        owner: root
+        group: root
+        state: link
+
+    - name: Restart service cron on centos, in all cases, also issue daemon-reload to pick up config changes
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
+        name: systemd-resolved
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'Ubuntu'
 
 - name: Copy Docker compose template
   template:
