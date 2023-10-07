@@ -12,6 +12,8 @@ services:
       - "8000:80/tcp"
     environment:
       TZ: {{ server_timezone }}
+      PIHOLE_UID: {{ server_data_user_uid }}
+      PIHOLE_GID: {{ server_data_group_gid }}
     volumes:
       - {{ pihole_config_path }}/etc-pihole:/etc/pihole
       - {{ pihole_config_path }}/etc-dnsmasq.d:/etc/dnsmasq.d
