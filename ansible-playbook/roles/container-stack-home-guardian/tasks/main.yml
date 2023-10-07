@@ -29,8 +29,8 @@
 
     - name: Create a symbolic link for /etc/resolv.conf
       ansible.builtin.file:
-        src: /etc/resolv.conf
-        dest: /run/systemd/resolve/resolv.conf
+        src: /run/systemd/resolve/resolv.conf
+        dest: /etc/resolv.conf
         owner: root
         group: root
         state: link
