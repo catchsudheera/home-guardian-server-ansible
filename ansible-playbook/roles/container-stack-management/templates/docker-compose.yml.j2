@@ -30,5 +30,5 @@ services:
 
 networks:
   server_network:
-    external:
-      name: {{ docker_network_name }}
+    name: {{ docker_network_name }}
+    external: true
