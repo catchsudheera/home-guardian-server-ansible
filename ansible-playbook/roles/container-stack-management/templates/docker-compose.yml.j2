@@ -26,7 +26,7 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
         - {{ dockhand_hawser_config_path }}:/data/stacks
       networks:
-        - media_server_network
+        - server_network
       restart: always
 
 networks:
