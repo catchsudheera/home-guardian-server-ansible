@@ -69,7 +69,7 @@
       register: hg_server_container_stack_location_docker_compose_file
 
     - name: Check validity of compose file
-      shell: "docker-compose -f {{ hg_server_container_stack_location }}/docker-compose.yml config"
+      shell: "docker compose -f {{ hg_server_container_stack_location }}/docker-compose.yml config"
       register: hg_server_container_stack_docker_compose_file_validate
       ignore_errors: yes
 
